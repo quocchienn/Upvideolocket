@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi ảnh lên Telegram</title>
+</head>
+<body>
+    <h2>Chọn ảnh để gửi lên Telegram</h2>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+    <button onclick="uploadFiles()">Gửi ảnh</button>
+
+    <script>
+        function uploadFiles() {
+            let files = document.getElementById("fileInput").files;
+            if (files.length === 0) {
+                alert("Vui lòng chọn ít nhất một ảnh!");
+                return;
+            }
+
+            let formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append("photos[]", files[i]);
+            }
+
+            fetch("upload.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => alert("Lỗi: " + error));
+        }
+    </script>
+</body>
+</html>
